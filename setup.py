@@ -1,6 +1,3 @@
-#!/usr/bin/env python
-"""RTR RFC 8210 protocol"""
-
 import re
 from setuptools import setup, find_packages
 
