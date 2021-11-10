@@ -15,7 +15,7 @@ except ImportError:
 class rfc8210router(object):
 	"""RTR RFC 8210 protocol"""
 
-	def __init__(self, serial=None, session_id=None, debug=0):
+	def __init__(self, host=None, port=None, serial=None, session_id=None, debug=0):
 		"""RTR RFC 8210 protocol"""
 
 		self.time_next_refresh = None
@@ -25,6 +25,15 @@ class rfc8210router(object):
 			self.logger = rfc8210logger(self._debug_level).getLogger()
 		else:
 			self.logger = None
+
+		if host:
+			self.host = host
+		else:
+			self.host = None
+		if port:
+			self.port = port
+		else:
+			self.port = None
 
 		if session_id:
 			self._current_session_id = int(session_id)
@@ -205,6 +214,9 @@ class rfc8210router(object):
 					self._routingtable.announce(cidr, asn, maxlen)
 				except:
 					sys.stderr.write("announce(%s, %s, %s) - failed\n" % (cidr, asn, maxlen))
+			if self.logger:
+				self.logger.info("update,announce,%s,%s,%s,%s,%s", cidr, asn, maxlen, self.host, self.port)
+
 		else:
 			if maxlen:
 				self._routes['withdraw'] += [{'ip': cidr, 'asn': asn, 'maxlen': maxlen}]
@@ -215,6 +227,9 @@ class rfc8210router(object):
 					self._routingtable.withdraw(cidr, asn, maxlen)
 			except:
 				sys.stderr.write("withdraw(%s, %s, %s) - failed\n" % (cidr, asn, maxlen))
+
+			if self.logger:
+				self.logger.info("update,withdraw,%s,%s,%s,%s,%s", cidr, asn, maxlen, self.host, self.port)
 
 	def _convert_to_hms(self, secs):
 		"""RTR RFC 8210 protocol"""
