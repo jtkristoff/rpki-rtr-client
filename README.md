@@ -143,6 +143,14 @@ to debug the protocol with the `-d|--dump` argument. This generates a
 `data/__________-raw-data.bin` file. The `file_process.py` command will
 process that file.
 
+## TODO
+
+- (-v) required for syslog, fix that
+- tune logging output generally
+- find and fix the dupe routing table entry bug
+- daemonize
+- look at fine tuning TCP session handling (see jtk's favheaders.py)
+
 ## Changelog
 
 2021-11-10
@@ -151,6 +159,8 @@ process that file.
 - add host and port parameters in calls to rfc8210router()
 - rename logger name from RFC8210 to rpki-rtr-client
 - add announce/withdraw detail logging to rtr_protocol()
+- add basic syslog handling
+- add contrib/rp-mon.sh until rtr_client is daemonized
 
 v1.20
 - This is the first release and while it works, it is not ready for
