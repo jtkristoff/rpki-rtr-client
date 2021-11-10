@@ -224,10 +224,10 @@ def dump_routes(rtr_session, serial, session_id):
 		# dump the full routing table
 		rtr_session.save_routing_table()
 
-def rtr_client(host=None, port=None, serial=None, session_id=None, timeout=None, dump=False, debug=0):
+def rtr_client(host=None, port=None, serial=None, session_id=None, timeout=None, dump=False, syslog=False, debug=0):
 	"""RTR client"""
 
-	rtr_session = rfc8210router(host=host, port=port, serial=serial, session_id=session_id, debug=debug)
+	rtr_session = rfc8210router(host=host, port=port, serial=serial, session_id=session_id, syslog=syslog, debug=debug)
 
 	if dump:
 		data_directory(now_in_utc())
@@ -381,6 +381,7 @@ def doit(args=None):
 	"""RTR client"""
 
 	debug = 0
+	syslog = False
 	dump = False
 	host = None
 	port = None
@@ -398,11 +399,12 @@ def doit(args=None):
 					+ '[-s SERIALNUMBER|--serial=SERIALNUMBER] '
 					+ '[-S SESSIONID|--session=SESSIONID] '
 					+ '[-t SECONDS|--timeout=SECONDS] '
+					+ '[-l|--syslog] '
 					+ '[-d|--dump] '
 		)
 
 	try:
-		opts, args = getopt.getopt(args, 'HVvh:p:s:S:t:d', [
+		opts, args = getopt.getopt(args, 'HVvh:p:s:S:t:ld', [
 						'help',
 						'version',
 						'verbose',
@@ -410,6 +412,7 @@ def doit(args=None):
 						'serial=',
 						'session=',
 						'timeout=',
+						'syslog',
 						'debug'
 						])
 	except getopt.GetoptError:
@@ -432,10 +435,12 @@ def doit(args=None):
 			session_id = int(arg)
 		elif opt in ('-t', '--timeout'):
 			timeout = int(arg)
+		elif opt in ('-l', '--syslog'):
+			syslog = True
 		elif opt in ('-d', '--dump'):
 			dump = True
 
-	rtr_client(host=host, port=port, serial=serial, session_id=session_id, timeout=timeout, dump=dump, debug=debug)
+	rtr_client(host=host, port=port, serial=serial, session_id=session_id, timeout=timeout, dump=dump, syslog=syslog, debug=debug)
 	sys.exit(0)
 
 def main(args=None):

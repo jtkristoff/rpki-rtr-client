@@ -15,14 +15,16 @@ except ImportError:
 class rfc8210router(object):
 	"""RTR RFC 8210 protocol"""
 
-	def __init__(self, host=None, port=None, serial=None, session_id=None, debug=0):
+	def __init__(self, host=None, port=None, serial=None, session_id=None, syslog=False, debug=0):
 		"""RTR RFC 8210 protocol"""
 
 		self.time_next_refresh = None
 
+		self._use_syslog = syslog
+
 		self._debug_level = debug
 		if self._debug_level > 0:
-			self.logger = rfc8210logger(self._debug_level).getLogger()
+			self.logger = rfc8210logger(self._debug_level, self._use_syslog).getLogger()
 		else:
 			self.logger = None
 

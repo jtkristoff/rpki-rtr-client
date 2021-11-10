@@ -1,6 +1,8 @@
 """ Logging"""
 import logging
 
+from logging.handlers import SysLogHandler
+
 # try:
 #	import http.client as http_client
 # except ImportError:
@@ -13,13 +15,18 @@ INFO = 1
 class rfc8210logger(object):
 	""" Logging for Cloudflare API"""
 
-	def __init__(self, debug_level):
+	def __init__(self, debug_level, syslog=False):
 		""" Logging for RFC8210 protocol"""
 		self.logger_level = self._get_logging_level(debug_level)
 		#logging.basicConfig(level=self.logger_level)
 		request_logger = logging.getLogger("requests.packages.urllib3")
 		request_logger.setLevel(self.logger_level)
 		request_logger.propagate = debug_level
+
+		if syslog:
+			self.use_syslog = True
+		else:
+			self.use_syslog = False
 
 	def getLogger(self):
 		""" Logging for RFC8210 protocol"""
@@ -40,6 +47,13 @@ class rfc8210logger(object):
 		logger.addHandler(ch)
 
 		# http_client.HTTPConnection.debuglevel = 1
+
+		# add syslog handler if requested
+		if self.use_syslog:
+			syslog = SysLogHandler('/dev/log', facility=SysLogHandler.LOG_LOCAL0)
+			syslog.setFormatter(logging.Formatter('rpki-rtr-client: %(message)s'))
+			logger.addHandler(syslog)
+			logger.setLevel('INFO')
 
 		return logger
 
