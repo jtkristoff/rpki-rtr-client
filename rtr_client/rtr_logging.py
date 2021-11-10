@@ -24,7 +24,7 @@ class rfc8210logger(object):
 	def getLogger(self):
 		""" Logging for RFC8210 protocol"""
 		# create logger
-		logger = logging.getLogger('RFC8210')
+		logger = logging.getLogger('rpki-rtr-client')
 		logger.setLevel(self.logger_level)
 
 		ch = logging.StreamHandler()
