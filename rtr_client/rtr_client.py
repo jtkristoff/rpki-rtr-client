@@ -227,7 +227,7 @@ def dump_routes(rtr_session, serial, session_id):
 def rtr_client(host=None, port=None, serial=None, session_id=None, timeout=None, dump=False, debug=0):
 	"""RTR client"""
 
-	rtr_session = rfc8210router(serial=serial, session_id=session_id, debug=debug)
+	rtr_session = rfc8210router(host=host, port=port, serial=serial, session_id=session_id, debug=debug)
 
 	if dump:
 		data_directory(now_in_utc())
