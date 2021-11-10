@@ -6,9 +6,6 @@ _version_re = re.compile(r"__version__\s=\s'(.*)'")
 def main():
 	"""RTR RFC 8210 protocol"""
 
-	with open('README.rst') as read_me:
-		long_description = read_me.read()
-
 	with open('rtr_client/__init__.py', 'r') as f:
 		version = _version_re.search(f.read()).group(1)
 
@@ -16,7 +13,6 @@ def main():
 		name='rpki-rtr-client',
 		version=version,
 		description='A simple client-side implementation of the RTR RFC8210 protocol in Python',
-		long_description=long_description,
 		author='Martin J. Levy',
 		author_email='martin@cloudflare.com',
 		url='https://github.com/cloudflare/rpki-rtr-client',
