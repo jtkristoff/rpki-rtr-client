@@ -217,7 +217,7 @@ class rfc8210router(object):
 				except:
 					sys.stderr.write("announce(%s, %s, %s) - failed\n" % (cidr, asn, maxlen))
 			if self.logger:
-				self.logger.info("update,announce,%s,%s,%s,%s,%s", cidr, asn, maxlen, self.host, self.port)
+				self.logger.info("update,announce,%s,%s,%s,%s,%s", cidr, asn, str(maxlen or ''), self.host, self.port)
 
 		else:
 			if maxlen:
@@ -231,7 +231,7 @@ class rfc8210router(object):
 				sys.stderr.write("withdraw(%s, %s, %s) - failed\n" % (cidr, asn, maxlen))
 
 			if self.logger:
-				self.logger.info("update,withdraw,%s,%s,%s,%s,%s", cidr, asn, maxlen, self.host, self.port)
+				self.logger.info("update,withdraw,%s,%s,%s,%s,%s", cidr, asn, str(maxlen or ''), self.host, self.port)
 
 	def _convert_to_hms(self, secs):
 		"""RTR RFC 8210 protocol"""
