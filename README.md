@@ -153,6 +153,9 @@ process that file.
 
 ## Changelog
 
+2021-11-16
+- use tempfile for atomic overwrite of data/routingtable.json
+
 2021-11-10
 - convert README to markdown with minor doc updates
 - remove she-bang from setup.py
