@@ -3,6 +3,8 @@
 
 import json
 import ipaddress
+import os
+import tempfile
 
 try:
 	import pytricia
@@ -122,7 +124,8 @@ class RoutingTable(object):
 		"""RTR protocol basic Routing Table support"""
 
 		j = {'routes': {'ipv4': self._ipv[4], 'ipv6': self._ipv[6]}}
-		with open('data/routingtable.json', 'w') as fd:
+		# tempfile to make clobbering existing file an atomic operation
+		with tempfile.NamedTemporaryFile(delete=False, dir='data/', mode='w') as tf:
 
 			class IPAddressEncoder(json.JSONEncoder):
 				def default(self, obj):
@@ -138,6 +141,9 @@ class RoutingTable(object):
 					return json.JSONEncoder.default(self, obj)
 
 			fd.write(json.dumps(j, indent=2, cls=IPAddressEncoder))
+			tf.write(json.dumps(j, indent=2, cls=IPAddressEncoder))
+			tf.close()
+			os.rename(tf.name, 'data/routingtable.json')
 
 	def _clear(self):
 		"""RTR protocol basic Routing Table support"""
