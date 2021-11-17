@@ -140,7 +140,6 @@ class RoutingTable(object):
 						return str(obj)
 					return json.JSONEncoder.default(self, obj)
 
-			fd.write(json.dumps(j, indent=2, cls=IPAddressEncoder))
 			tf.write(json.dumps(j, indent=2, cls=IPAddressEncoder))
 			tf.close()
 			os.rename(tf.name, 'data/routingtable.json')
